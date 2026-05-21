@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ayala Guess Character</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <header>
+      <div class="score-board">
+        <span>Score: <span id="score">0</span></span>
+        <span>Stage: <span id="stage">1</span>/<span id="total-stages">5</span></span>
+      </div>
+      <h1>Guess by Colors!</h1>
+      <p>Tap the mic and say the character's name.</p>
+    </header>
+
+    <main>
+      <!-- The Color Palette -->
+      <div class="color-palette" id="colorPalette">
+        <!-- Colored squares will be injected here by JS -->
+      </div>
+
+      <!-- The Character Reveal (Hidden initially) -->
+      <div class="character-reveal" id="characterReveal" style="display: none;">
+        <img id="characterImage" src="" alt="Character">
+        <h2 id="characterName">Name</h2>
+      </div>
+
+      <!-- Interaction Area -->
+      <div class="interaction-area">
+        <button id="micBtn" class="mic-btn">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <div id="statusText" class="status-text">Tap to Speak</div>
+        <div id="recognizedText" class="recognized-text"></div>
+      </div>
+    </main>
+
+    <!-- Win / End Screen -->
+    <div id="endScreen" class="end-screen" style="display: none;">
+      <h2>You are an Anime Master! 🎉</h2>
+      <p>Final Score: <span id="finalScore">0</span></p>
+      <button id="restartBtn" class="restart-btn">Play Again</button>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@ const allCharacters = [
     id: "tanjiro",
     name: "Tanjiro",
     series: "Demon Slayer",
-    aliases: ["tanjiro", "tangero", "sanjiro"],
+    aliases: ["tanjiro", "tangero", "sanjiro", "טנג'ירו", "תנג'ירו", "טנז'ירו", "טנגירו"],
     colors: ["#10b981", "#000000", "#991b1b", "#059669", "#7f1d1d", "#fcd34d"],
     image: "assets/tanjiro.png"
   },
@@ -11,7 +11,7 @@ const allCharacters = [
     id: "nezuko",
     name: "Nezuko",
     series: "Demon Slayer",
-    aliases: ["nezuko", "nazuko", "nesuko"],
+    aliases: ["nezuko", "nazuko", "nesuko", "נזוקו", "נזו קו", "נאזוקו"],
     colors: ["#fbcfe8", "#f43f5e", "#22c55e", "#db2777", "#86efac", "#fb923c"],
     image: "assets/nezuko.png"
   },
@@ -19,7 +19,7 @@ const allCharacters = [
     id: "inosuke",
     name: "Inosuke",
     series: "Demon Slayer",
-    aliases: ["inosuke", "inoski", "enosuke"],
+    aliases: ["inosuke", "inoski", "enosuke", "אינוסקה", "אינוסוקה", "אינוסק", "אינו סקה"],
     colors: ["#94a3b8", "#1e3a8a", "#8b5cf6", "#475569", "#1e40af", "#c084fc"],
     image: "assets/inosuke.png"
   },
@@ -27,7 +27,7 @@ const allCharacters = [
     id: "zenitsu",
     name: "Zenitsu",
     series: "Demon Slayer",
-    aliases: ["zenitsu", "zenitsu", "zanitsu"],
+    aliases: ["zenitsu", "zenitsu", "zanitsu", "זניצו", "זניטסו", "זניטו"],
     colors: ["#fde047", "#f97316", "#ffffff", "#eab308", "#ea580c", "#000000"],
     image: "assets/zenitsu.png"
   },
@@ -35,7 +35,7 @@ const allCharacters = [
     id: "midoriya",
     name: "Midoriya",
     series: "My Hero Academia",
-    aliases: ["midoriya", "deku", "izuku"],
+    aliases: ["midoriya", "deku", "izuku", "מידוריה", "מי דוריה", "מידורי", "דקו", "איזוקו"],
     colors: ["#166534", "#dc2626", "#ffffff", "#15803d", "#991b1b", "#fde047"],
     image: "assets/midoriya.png"
   },
@@ -43,7 +43,7 @@ const allCharacters = [
     id: "bakugo",
     name: "Bakugo",
     series: "My Hero Academia",
-    aliases: ["bakugo", "kacchan", "bakugou"],
+    aliases: ["bakugo", "kacchan", "bakugou", "באקוגו", "בקוגו", "קאצ'אן", "קאצן", "בגוגו"],
     colors: ["#ea580c", "#000000", "#16a34a", "#c2410c", "#1f2937", "#22c55e"],
     image: "assets/bakugo.png"
   },
@@ -51,7 +51,7 @@ const allCharacters = [
     id: "todoroki",
     name: "Todoroki",
     series: "My Hero Academia",
-    aliases: ["todoroki", "shoto", "todo"],
+    aliases: ["todoroki", "shoto", "todo", "טודורוקי", "שוטו", "טודורוק"],
     colors: ["#dc2626", "#ffffff", "#1e3a8a", "#b91c1c", "#f8fafc", "#94a3b8"],
     image: "assets/todoroki.png"
   },
@@ -59,7 +59,7 @@ const allCharacters = [
     id: "gon",
     name: "Gon",
     series: "Hunter x Hunter",
-    aliases: ["gon", "gun", "gone"],
+    aliases: ["gon", "gun", "gone", "גון", "גאן", "גון פריקס"],
     colors: ["#15803d", "#ea580c", "#000000", "#16a34a", "#c2410c", "#ffffff"],
     image: "assets/gon.png"
   },
@@ -67,7 +67,7 @@ const allCharacters = [
     id: "hisoka",
     name: "Hisoka",
     series: "Hunter x Hunter",
-    aliases: ["hisoka", "hisuka", "esoka"],
+    aliases: ["hisoka", "hisuka", "esoka", "היסוקה", "חיסוקה", "איסוקה", "יסוקה"],
     colors: ["#f472b6", "#ffffff", "#fde047", "#db2777", "#000000", "#38bdf8"],
     image: "assets/hisoka.png"
   },
@@ -75,7 +75,7 @@ const allCharacters = [
     id: "komi",
     name: "Komi",
     series: "Komi Can't Communicate",
-    aliases: ["komi", "comey", "kami"],
+    aliases: ["komi", "comey", "kami", "קומי", "כומאי", "קומאי"],
     colors: ["#312e81", "#ffffff", "#be123c", "#4338ca", "#9f1239", "#000000"],
     image: "assets/komi.png"
   }
@@ -133,7 +133,8 @@ let recognition = null;
 if (SpeechRecognition) {
   recognition = new SpeechRecognition();
   recognition.continuous = false;
-  recognition.lang = 'en-US';
+  // CHANGED TO HEBREW FOR ISRAELI ACCENT PHONETICS
+  recognition.lang = 'he-IL';
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
 
@@ -169,18 +170,16 @@ if (SpeechRecognition) {
 
 function getRandomCharacter() {
   if (availableCharacters.length === 0) {
-    // If we run out of characters before 2 mins, reshuffle!
     availableCharacters = [...allCharacters];
   }
   const randomIndex = Math.floor(Math.random() * availableCharacters.length);
   const char = availableCharacters[randomIndex];
-  // Remove it so it doesn't repeat
   availableCharacters.splice(randomIndex, 1);
   return char;
 }
 
 function startGame() {
-  availableCharacters = [...allCharacters]; // Reset pool
+  availableCharacters = [...allCharacters];
   score = 0;
   stageCount = 1;
   globalTimeLeft = 120;
@@ -188,7 +187,6 @@ function startGame() {
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
   
-  // Start Global Timer
   clearInterval(globalInterval);
   globalInterval = setInterval(() => {
     globalTimeLeft--;
@@ -212,9 +210,8 @@ function loadStage() {
 
   currentChar = getRandomCharacter();
   stageEl.textContent = stageCount;
-  seriesNameEl.textContent = currentChar.series; // Display series name
+  seriesNameEl.textContent = currentChar.series;
   
-  // Reset Stage Timer
   stageTimeLeft = 30;
   stageTimerText.textContent = stageTimeLeft;
   setProgress(100);
@@ -230,7 +227,6 @@ function loadStage() {
     }
   }, 1000);
 
-  // Reset UI
   characterReveal.style.display = 'none';
   colorPalette.style.display = 'grid';
   colorPalette.innerHTML = '';
@@ -238,7 +234,6 @@ function loadStage() {
   statusText.textContent = "Tap to Speak";
   micBtn.classList.remove('correct');
 
-  // Render 6 colors
   currentChar.colors.forEach((color, index) => {
     const blob = document.createElement('div');
     blob.className = 'color-blob';
@@ -287,9 +282,8 @@ function handleTimeout() {
   statusText.textContent = "Time's Up!";
   revealCharacter();
   
-  // Text to Speech
   const utterance = new SpeechSynthesisUtterance(`Time is up! It is ${currentChar.name}`);
-  utterance.lang = 'en-US';
+  utterance.lang = 'en-US'; // English TTS so it reads the English name correctly
   window.speechSynthesis.speak(utterance);
 
   setTimeout(() => {
@@ -323,7 +317,6 @@ function endGame() {
   endScreen.style.display = 'flex';
 }
 
-// Leaderboard Logic
 function getLeaderboard() {
   const data = localStorage.getItem('ayalaLeaderboard');
   return data ? JSON.parse(data) : [];
@@ -373,6 +366,5 @@ micBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', startGame);
 
-// Initialize
 updateGlobalTimerDisplay();
 startGame();

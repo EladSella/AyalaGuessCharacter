@@ -1,7 +1,8 @@
-const characters = [
+const allCharacters = [
   {
     id: "tanjiro",
     name: "Tanjiro",
+    series: "Demon Slayer",
     aliases: ["tanjiro", "tangero", "sanjiro"],
     colors: ["#10b981", "#000000", "#991b1b", "#059669", "#7f1d1d", "#fcd34d"],
     image: "assets/tanjiro.png"
@@ -9,33 +10,78 @@ const characters = [
   {
     id: "nezuko",
     name: "Nezuko",
+    series: "Demon Slayer",
     aliases: ["nezuko", "nazuko", "nesuko"],
     colors: ["#fbcfe8", "#f43f5e", "#22c55e", "#db2777", "#86efac", "#fb923c"],
     image: "assets/nezuko.png"
   },
   {
+    id: "inosuke",
+    name: "Inosuke",
+    series: "Demon Slayer",
+    aliases: ["inosuke", "inoski", "enosuke"],
+    colors: ["#94a3b8", "#1e3a8a", "#8b5cf6", "#475569", "#1e40af", "#c084fc"],
+    image: "assets/inosuke.png"
+  },
+  {
+    id: "zenitsu",
+    name: "Zenitsu",
+    series: "Demon Slayer",
+    aliases: ["zenitsu", "zenitsu", "zanitsu"],
+    colors: ["#fde047", "#f97316", "#ffffff", "#eab308", "#ea580c", "#000000"],
+    image: "assets/zenitsu.png"
+  },
+  {
     id: "midoriya",
     name: "Midoriya",
+    series: "My Hero Academia",
     aliases: ["midoriya", "deku", "izuku"],
     colors: ["#166534", "#dc2626", "#ffffff", "#15803d", "#991b1b", "#fde047"],
     image: "assets/midoriya.png"
   },
   {
+    id: "bakugo",
+    name: "Bakugo",
+    series: "My Hero Academia",
+    aliases: ["bakugo", "kacchan", "bakugou"],
+    colors: ["#ea580c", "#000000", "#16a34a", "#c2410c", "#1f2937", "#22c55e"],
+    image: "assets/bakugo.png"
+  },
+  {
+    id: "todoroki",
+    name: "Todoroki",
+    series: "My Hero Academia",
+    aliases: ["todoroki", "shoto", "todo"],
+    colors: ["#dc2626", "#ffffff", "#1e3a8a", "#b91c1c", "#f8fafc", "#94a3b8"],
+    image: "assets/todoroki.png"
+  },
+  {
     id: "gon",
     name: "Gon",
+    series: "Hunter x Hunter",
     aliases: ["gon", "gun", "gone"],
     colors: ["#15803d", "#ea580c", "#000000", "#16a34a", "#c2410c", "#ffffff"],
     image: "assets/gon.png"
   },
   {
+    id: "hisoka",
+    name: "Hisoka",
+    series: "Hunter x Hunter",
+    aliases: ["hisoka", "hisuka", "esoka"],
+    colors: ["#f472b6", "#ffffff", "#fde047", "#db2777", "#000000", "#38bdf8"],
+    image: "assets/hisoka.png"
+  },
+  {
     id: "komi",
     name: "Komi",
+    series: "Komi Can't Communicate",
     aliases: ["komi", "comey", "kami"],
     colors: ["#312e81", "#ffffff", "#be123c", "#4338ca", "#9f1239", "#000000"],
     image: "assets/komi.png"
   }
 ];
 
+let availableCharacters = [];
 let score = 0;
 let stageCount = 1;
 let isListening = false;
@@ -53,6 +99,7 @@ const colorPalette = document.getElementById('colorPalette');
 const characterReveal = document.getElementById('characterReveal');
 const characterImage = document.getElementById('characterImage');
 const characterName = document.getElementById('characterName');
+const seriesNameEl = document.getElementById('seriesName');
 const micBtn = document.getElementById('micBtn');
 const statusText = document.getElementById('statusText');
 const recognizedText = document.getElementById('recognizedText');
@@ -121,11 +168,19 @@ if (SpeechRecognition) {
 }
 
 function getRandomCharacter() {
-  const randomIndex = Math.floor(Math.random() * characters.length);
-  return characters[randomIndex];
+  if (availableCharacters.length === 0) {
+    // If we run out of characters before 2 mins, reshuffle!
+    availableCharacters = [...allCharacters];
+  }
+  const randomIndex = Math.floor(Math.random() * availableCharacters.length);
+  const char = availableCharacters[randomIndex];
+  // Remove it so it doesn't repeat
+  availableCharacters.splice(randomIndex, 1);
+  return char;
 }
 
 function startGame() {
+  availableCharacters = [...allCharacters]; // Reset pool
   score = 0;
   stageCount = 1;
   globalTimeLeft = 120;
@@ -157,6 +212,7 @@ function loadStage() {
 
   currentChar = getRandomCharacter();
   stageEl.textContent = stageCount;
+  seriesNameEl.textContent = currentChar.series; // Display series name
   
   // Reset Stage Timer
   stageTimeLeft = 30;
@@ -241,7 +297,7 @@ function handleTimeout() {
       stageCount++;
       loadStage();
     }
-  }, 3000);
+  }, 3500);
 }
 
 function revealCharacter() {

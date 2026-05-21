@@ -81,6 +81,15 @@ header {
   color: var(--text-color);
 }
 
+.series-hint {
+  font-size: 16px;
+  color: #c084fc;
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 main {
   flex: 1;
   display: flex;

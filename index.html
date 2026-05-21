@@ -12,16 +12,24 @@
   
   <div class="app-container">
     <header>
-      <div class="score-board">
-        <span>Score: <span id="score">0</span></span>
-        <span>Stage: <span id="stage">1</span>/<span id="total-stages">5</span></span>
+      <div class="top-bar">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="global-time">Time Left: <span id="globalTimer">02:00</span></div>
+        <div class="stat">Stage: <span id="stage">1</span></div>
       </div>
-      <h1>Guess by Colors!</h1>
-      <p>Tap the mic and say the character's name.</p>
+      
+      <!-- Circular Stage Timer -->
+      <div class="stage-timer-container">
+        <svg class="progress-ring" width="80" height="80">
+          <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+          <circle id="stageTimerRing" class="progress-ring__circle" stroke="#3b82f6" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+        </svg>
+        <div id="stageTimerText" class="stage-timer-text">30</div>
+      </div>
     </header>
 
     <main>
-      <!-- The Color Palette -->
+      <!-- The Color Palette (Now 6 colors) -->
       <div class="color-palette" id="colorPalette">
         <!-- Colored squares will be injected here by JS -->
       </div>
@@ -42,11 +50,21 @@
       </div>
     </main>
 
-    <!-- Win / End Screen -->
+    <!-- Leaderboard / End Screen -->
     <div id="endScreen" class="end-screen" style="display: none;">
-      <h2>You are an Anime Master! 🎉</h2>
+      <h2>Time's Up! ⏱️</h2>
       <p>Final Score: <span id="finalScore">0</span></p>
-      <button id="restartBtn" class="restart-btn">Play Again</button>
+      
+      <div class="leaderboard">
+        <h3>Top 5 Players</h3>
+        <ul id="leaderboardList">
+          <!-- Scores will be injected here -->
+        </ul>
+      </div>
+
+      <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="15" autocomplete="off">
+      <button id="saveScoreBtn" class="save-btn">Save Score</button>
+      <button id="restartBtn" class="restart-btn" style="display: none;">Play Again</button>
     </div>
 
   </div>

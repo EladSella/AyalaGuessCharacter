@@ -32,6 +32,22 @@ const allCharacters = [
     image: "assets/zenitsu.png"
   },
   {
+    id: "rengoku",
+    name: "Rengoku",
+    series: "Demon Slayer",
+    aliases: ["rengoku", "kyojuro", "רנגוקו", "רנגוק", "קיוג'ורו"],
+    colors: ["#ef4444", "#f97316", "#fde047", "#000000", "#ffffff", "#b91c1c"],
+    image: "assets/rengoku.png"
+  },
+  {
+    id: "tengen",
+    name: "Tengen",
+    series: "Demon Slayer",
+    aliases: ["tengen", "uzui", "טנגן", "אוזוי", "טנגן אוזוי"],
+    colors: ["#3b82f6", "#f87171", "#ffffff", "#000000", "#d1d5db", "#2563eb"],
+    image: "assets/tengen.png"
+  },
+  {
     id: "midoriya",
     name: "Midoriya",
     series: "My Hero Academia",
@@ -56,12 +72,36 @@ const allCharacters = [
     image: "assets/todoroki.png"
   },
   {
+    id: "uraraka",
+    name: "Uraraka",
+    series: "My Hero Academia",
+    aliases: ["uraraka", "ochaco", "אורארקה", "אוררקה", "אוצ'אקו", "אוצ'קו"],
+    colors: ["#f472b6", "#3b82f6", "#ffffff", "#000000", "#1e3a8a", "#ec4899"],
+    image: "assets/uraraka.png"
+  },
+  {
     id: "gon",
     name: "Gon",
     series: "Hunter x Hunter",
     aliases: ["gon", "gun", "gone", "גון", "גאן", "גון פריקס"],
     colors: ["#15803d", "#ea580c", "#000000", "#16a34a", "#c2410c", "#ffffff"],
     image: "assets/gon.png"
+  },
+  {
+    id: "killua",
+    name: "Killua",
+    series: "Hunter x Hunter",
+    aliases: ["killua", "קילואה", "קילוא"],
+    colors: ["#e2e8f0", "#1e3a8a", "#000000", "#94a3b8", "#cbd5e1", "#3b82f6"],
+    image: "assets/killua.png"
+  },
+  {
+    id: "kurapika",
+    name: "Kurapika",
+    series: "Hunter x Hunter",
+    aliases: ["kurapika", "קוראפיקה", "קורפיקה", "קוראפיק"],
+    colors: ["#fde047", "#1e3a8a", "#ffffff", "#ef4444", "#000000", "#eab308"],
+    image: "assets/kurapika.png"
   },
   {
     id: "hisoka",
@@ -81,6 +121,13 @@ const allCharacters = [
   }
 ];
 
+const seriesAudio = {
+  "Demon Slayer": "assets/demonslayer.webm",
+  "My Hero Academia": "assets/mha.webm",
+  "Hunter x Hunter": "assets/hxh.webm",
+  "Komi Can't Communicate": "assets/komi.webm"
+};
+
 let availableCharacters = [];
 let score = 0;
 let stageCount = 1;
@@ -93,6 +140,11 @@ let globalTimeLeft = 120; // 2 minutes
 let stageTimeLeft = 30; // 30 seconds
 let globalInterval = null;
 let stageInterval = null;
+
+// Audio
+const bgMusic = new Audio();
+bgMusic.loop = true;
+bgMusic.volume = 0.3; // 30% volume so it's background
 
 // DOM Elements
 const colorPalette = document.getElementById('colorPalette');
@@ -133,7 +185,6 @@ let recognition = null;
 if (SpeechRecognition) {
   recognition = new SpeechRecognition();
   recognition.continuous = false;
-  // CHANGED TO HEBREW FOR ISRAELI ACCENT PHONETICS
   recognition.lang = 'he-IL';
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
@@ -212,6 +263,18 @@ function loadStage() {
   stageEl.textContent = stageCount;
   seriesNameEl.textContent = currentChar.series;
   
+  // Handle Music
+  const newMusicSrc = seriesAudio[currentChar.series];
+  if (newMusicSrc && !bgMusic.src.includes(newMusicSrc)) {
+    bgMusic.src = newMusicSrc;
+    let playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked. Will start when user clicks the mic button.
+      });
+    }
+  }
+
   stageTimeLeft = 30;
   stageTimerText.textContent = stageTimeLeft;
   setProgress(100);
@@ -283,7 +346,7 @@ function handleTimeout() {
   revealCharacter();
   
   const utterance = new SpeechSynthesisUtterance(`Time is up! It is ${currentChar.name}`);
-  utterance.lang = 'en-US'; // English TTS so it reads the English name correctly
+  utterance.lang = 'en-US'; 
   window.speechSynthesis.speak(utterance);
 
   setTimeout(() => {
@@ -306,6 +369,7 @@ function endGame() {
   clearInterval(globalInterval);
   clearInterval(stageInterval);
   if (isListening && recognition) recognition.stop();
+  bgMusic.pause();
 
   finalScoreEl.textContent = score;
   playerNameInput.style.display = 'block';
@@ -356,6 +420,11 @@ saveScoreBtn.addEventListener('click', () => {
 });
 
 micBtn.addEventListener('click', () => {
+  // Attempt to play music if it was blocked by autoplay policies
+  if (bgMusic.paused && gameActive) {
+    bgMusic.play();
+  }
+
   if (!recognition || !gameActive || stageTimeLeft <= 0) return;
   if (isListening) {
     recognition.stop();

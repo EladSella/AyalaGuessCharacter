@@ -27,24 +27,17 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
+
+      - name: Make Gradle wrapper executable
+        working-directory: android
+        run: chmod +x gradlew
 
       - name: Add Android platform (if not present)
         run: npx cap add android || true
 
       - name: Sync Capacitor assets
-        run: npx cap sync android --verbose > sync.log 2>&1
-
-      - name: Upload Sync Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: capacitor-sync-log
-          path: sync.log
-
-      - name: Make Gradle wrapper executable
-        working-directory: android
-        run: chmod +x gradlew
+        run: npx cap sync android
 
       - name: Build APK
         working-directory: android

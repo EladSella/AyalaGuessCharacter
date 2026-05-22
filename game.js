@@ -25,7 +25,13 @@ const allCharacters = [
   { id: "chrollo", name: "Chrollo", series: "Hunter x Hunter", aliases: ["chrollo", "lucilfer", "כרולו", "קרולו", "קורולו", "לוסילפר"], colors: ["#000000", "#4c1d95", "#ffffff", "#a855f7", "#1f2937", "#6b21a8"], image: "assets/chrollo.png" },
   { id: "netero", name: "Netero", series: "Hunter x Hunter", aliases: ["netero", "isaac", "נטרו", "נאטרו", "אייזק"], colors: ["#fef08a", "#ffffff", "#000000", "#eab308", "#d1d5db", "#ca8a04"], image: "assets/netero.png" },
   { id: "tadano", name: "Tadano", series: "Komi Can't Communicate", aliases: ["tadano", "hitohito", "טדאנו", "טאדאנו", "טדנו", "היטוהיטו"], colors: ["#000000", "#ffffff", "#9ca3af", "#1f2937", "#e5e7eb", "#4b5563"], image: "assets/tadano.png" },
-  { id: "najimi", name: "Najimi", series: "Komi Can't Communicate", aliases: ["najimi", "osana", "נג'ימי", "נאג'ימי", "נאגמי", "אוסאנה"], colors: ["#d946ef", "#a855f7", "#ffffff", "#000000", "#f0abfc", "#c084fc"], image: "assets/najimi.png" }
+  { id: "najimi", name: "Najimi", series: "Komi Can't Communicate", aliases: ["najimi", "osana", "נג'ימי", "נאג'ימי", "נאגמי", "אוסאנה"], colors: ["#d946ef", "#a855f7", "#ffffff", "#000000", "#f0abfc", "#c084fc"], image: "assets/najimi.png" },
+  // 5 Newest Characters
+  { id: "tsuyu", name: "Tsuyu", series: "My Hero Academia", aliases: ["tsuyu", "asui", "froppy", "סויו", "אסוי", "פרופי", "צפרדע"], colors: ["#22c55e", "#16a34a", "#ffffff", "#15803d", "#000000", "#facc15"], image: "assets/tsuyu.png" },
+  { id: "toga", name: "Toga", series: "My Hero Academia", aliases: ["toga", "himiko", "טוגה", "הימיקו", "טווגה"], colors: ["#fde047", "#fef08a", "#ef4444", "#dc2626", "#000000", "#f8fafc"], image: "assets/toga.png" },
+  { id: "jiro", name: "Jiro", series: "My Hero Academia", aliases: ["jiro", "kyoka", "earphone jack", "ג'ירו", "גירו", "קיאוקה", "קיוקה"], colors: ["#4c1d95", "#6d28d9", "#000000", "#1f2937", "#ef4444", "#ffffff"], image: "assets/jiro.png" },
+  { id: "mitsuri", name: "Mitsuri", series: "Demon Slayer", aliases: ["mitsuri", "kanroji", "מיצורי", "מיטסורי", "קאנרוג'י"], colors: ["#f472b6", "#a3e635", "#ffffff", "#000000", "#ec4899", "#84cc16"], image: "assets/mitsuri.png" },
+  { id: "meruem", name: "Meruem", series: "Hunter x Hunter", aliases: ["meruem", "king", "מרואם", "מראום", "מרים", "המלך"], colors: ["#4ade80", "#22c55e", "#16a34a", "#15803d", "#14532d", "#000000"], image: "assets/meruem.png" }
 ];
 
 const seriesAudio = {
@@ -203,6 +209,7 @@ function loadStage() {
 
   stageTimeLeft = 15;
   stageTimerText.textContent = stageTimeLeft;
+  stageTimerRing.style.stroke = '#3b82f6'; // Reset to blue
   setProgress(100);
   
   clearInterval(stageInterval);
@@ -210,6 +217,14 @@ function loadStage() {
     stageTimeLeft--;
     stageTimerText.textContent = stageTimeLeft;
     setProgress((stageTimeLeft / 15) * 100);
+    
+    if (stageTimeLeft > 7) {
+      stageTimerRing.style.stroke = '#3b82f6';
+    } else if (stageTimeLeft > 3) {
+      stageTimerRing.style.stroke = '#f97316';
+    } else {
+      stageTimerRing.style.stroke = '#ef4444';
+    }
     
     if (stageTimeLeft <= 0) {
       handleTimeout();

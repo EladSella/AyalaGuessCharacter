@@ -1,3 +1,4 @@
+--- game.js ---
 const allCharacters = [
   // Original 15
   { id: "tanjiro", name: "Tanjiro", series: "Demon Slayer", aliases: ["tanjiro", "tangero", "sanjiro", "טנג'ירו", "תנג'ירו", "טנז'ירו", "טנגירו"], colors: ["#10b981", "#000000", "#991b1b", "#059669", "#7f1d1d", "#fcd34d"], image: "assets/tanjiro.png" },
@@ -43,8 +44,8 @@ let currentChar = null;
 let gameActive = false;
 
 // Timers
-let globalTimeLeft = 60; // 1 minute
-let stageTimeLeft = 15; // 15 seconds
+let globalTimeLeft = 120; // 2 minutes
+let stageTimeLeft = 30; // 30 seconds
 let globalInterval = null;
 let stageInterval = null;
 
@@ -162,7 +163,7 @@ function startGame() {
   availableCharacters = [...allCharacters];
   score = 0;
   stageCount = 1;
-  globalTimeLeft = 60;
+  globalTimeLeft = 120;
   gameActive = true;
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
@@ -201,7 +202,7 @@ function loadStage() {
     }
   }
 
-  stageTimeLeft = 15;
+  stageTimeLeft = 30;
   stageTimerText.textContent = stageTimeLeft;
   setProgress(100);
   
@@ -209,7 +210,7 @@ function loadStage() {
   stageInterval = setInterval(() => {
     stageTimeLeft--;
     stageTimerText.textContent = stageTimeLeft;
-    setProgress((stageTimeLeft / 15) * 100);
+    setProgress((stageTimeLeft / 30) * 100);
     
     if (stageTimeLeft <= 0) {
       handleTimeout();
@@ -383,3 +384,365 @@ restartBtn.addEventListener('click', startGame);
 
 updateGlobalTimerDisplay();
 startGame();
+
+
+--- index.html ---
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ayala Guess Character</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <header>
+      <div class="top-bar">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="global-time">Time Left: <span id="globalTimer">02:00</span></div>
+        <div class="stat">Stage: <span id="stage">1</span></div>
+      </div>
+      
+      <!-- Circular Stage Timer -->
+      <div class="stage-timer-container">
+        <svg class="progress-ring" width="80" height="80">
+          <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+          <circle id="stageTimerRing" class="progress-ring__circle" stroke="#3b82f6" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+        </svg>
+        <div id="stageTimerText" class="stage-timer-text">30</div>
+      </div>
+      
+      <div class="series-hint">Series: <span id="seriesName"></span></div>
+    </header>
+
+    <main>
+      <!-- The Color Palette (Now 6 colors) -->
+      <div class="color-palette" id="colorPalette">
+        <!-- Colored squares will be injected here by JS -->
+      </div>
+
+      <!-- The Character Reveal (Hidden initially) -->
+      <div class="character-reveal" id="characterReveal" style="display: none;">
+        <img id="characterImage" src="" alt="Character">
+        <h2 id="characterName">Name</h2>
+      </div>
+
+      <!-- Interaction Area -->
+      <div class="interaction-area">
+        <button id="micBtn" class="mic-btn">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <div id="statusText" class="status-text">Tap to Speak</div>
+        <div id="recognizedText" class="recognized-text"></div>
+      </div>
+    </main>
+
+    <!-- Leaderboard / End Screen -->
+    <div id="endScreen" class="end-screen" style="display: none;">
+      <h2>Time's Up! ⏱️</h2>
+      <p>Final Score: <span id="finalScore">0</span></p>
+      
+      <div class="leaderboard">
+        <h3>Top 5 Players</h3>
+        <ul id="leaderboardList">
+          <!-- Scores will be injected here -->
+        </ul>
+      </div>
+
+      <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="15" autocomplete="off">
+      <button id="saveScoreBtn" class="save-btn">Save Score</button>
+      <button id="restartBtn" class="restart-btn" style="display: none;">Play Again</button>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
+
+
+--- style.css ---
+:root {
+  --bg-color: #0f172a;
+  --text-color: #f8fafc;
+  --accent: #3b82f6;
+  --mic-idle: #1e293b;
+  --mic-active: #ef4444;
+  --mic-correct: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 15px;
+  background: rgba(255,255,255,0.05);
+  padding: 10px 15px;
+  border-radius: 12px;
+}
+
+.global-time {
+  color: #fcd34d;
+  font-weight: 800;
+}
+
+/* Stage Timer SVG */
+.stage-timer-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 1s linear;
+}
+
+.stage-timer-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-color);
+}
+
+.series-hint {
+  font-size: 16px;
+  color: #c084fc;
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+/* 6 Colors Grid */
+.color-palette {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  justify-items: center;
+  transition: all 0.5s ease;
+  width: 100%;
+}
+
+.color-blob {
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+  animation: float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-8px); }
+}
+
+.character-reveal {
+  text-align: center;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+#characterImage {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--accent);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  margin-bottom: 15px;
+}
+
+#characterName {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.interaction-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.mic-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: var(--mic-idle);
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mic-btn.listening {
+  background: var(--mic-active);
+  box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.2), 0 0 0 20px rgba(239, 68, 68, 0.1);
+  animation: pulseMic 1.5s infinite;
+}
+
+.mic-btn.correct {
+  background: var(--mic-correct);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes pulseMic {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.status-text {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.recognized-text {
+  font-size: 18px;
+  font-weight: bold;
+  height: 24px;
+  color: #fcd34d;
+}
+
+.end-screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.98);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+}
+
+.end-screen h2 {
+  font-size: 32px;
+  text-align: center;
+  color: #10b981;
+}
+
+.leaderboard {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.leaderboard h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #a855f7;
+}
+
+.leaderboard ul {
+  list-style: none;
+}
+
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 16px;
+  font-weight: 600;
+}
+.leaderboard li:last-child {
+  border-bottom: none;
+}
+
+#playerNameInput {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+  outline: none;
+}
+#playerNameInput:focus {
+  border-color: var(--accent);
+}
+
+.save-btn, .restart-btn {
+  padding: 15px 30px;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}

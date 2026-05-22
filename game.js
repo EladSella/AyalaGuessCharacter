@@ -49,7 +49,9 @@ let currentChar = null;
 let gameActive = false;
 
 // Timers
+let globalTimeLeft = 60; // 60 seconds
 let stageTimeLeft = 15; // 15 seconds
+let globalInterval = null;
 let stageInterval = null;
 
 // Audio
@@ -165,9 +167,18 @@ function startGame() {
   availableCharacters = [...allCharacters];
   score = 0;
   stageCount = 1;
+  globalTimeLeft = 60;
   gameActive = true;
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
+
+  clearInterval(globalInterval);
+  globalInterval = setInterval(() => {
+    globalTimeLeft--;
+    if (globalTimeLeft <= 0) {
+      endGame();
+    }
+  }, 1000);
 
   loadStage();
 }
@@ -311,6 +322,7 @@ function revealCharacter() {
 
 function endGame() {
   gameActive = false;
+  clearInterval(globalInterval);
   clearInterval(stageInterval);
   if (isListening && recognition) recognition.stop();
   bgMusic.pause();

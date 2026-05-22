@@ -76,6 +76,7 @@ const stageEl = document.getElementById('stage');
 const stageTimerText = document.getElementById('stageTimerText');
 const stageTimerRing = document.getElementById('stageTimerRing');
 const endScreen = document.getElementById('endScreen');
+const startScreen = document.getElementById('startScreen');
 const finalScoreEl = document.getElementById('finalScore');
 const restartBtn = document.getElementById('restartBtn');
 const saveScoreBtn = document.getElementById('saveScoreBtn');
@@ -171,6 +172,7 @@ function startGame() {
   gameActive = true;
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
+  if (startScreen) startScreen.style.display = 'none';
 
   clearInterval(globalInterval);
   globalInterval = setInterval(() => {
@@ -386,6 +388,11 @@ micBtn.addEventListener('click', () => {
   }
 });
 
-restartBtn.addEventListener('click', startGame);
+const startBtn = document.getElementById('startBtn');
+if (startBtn) {
+  startBtn.addEventListener('click', startGame);
+}
 
-startGame();
+if (restartBtn) {
+  restartBtn.addEventListener('click', startGame);
+}

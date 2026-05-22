@@ -305,3 +305,59 @@ main {
   80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   100% { transform: translate(-50%, -100%) scale(1.5); opacity: 0; }
 }
+
+/* YouTube Channel Button */
+.yt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), 0 4px 15px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+  animation: ytPulse 2.5s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yt-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.8), 0 6px 20px rgba(0,0,0,0.5);
+}
+
+.yt-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: ytShimmer 3s ease-in-out infinite;
+}
+
+.yt-btn .yt-icon {
+  font-size: 18px;
+  animation: ytBounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes ytPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), 0 4px 15px rgba(0,0,0,0.4); }
+  50% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.9), 0 4px 25px rgba(0,0,0,0.5); }
+}
+
+@keyframes ytShimmer {
+  0% { left: -75%; }
+  60%, 100% { left: 130%; }
+}
+
+@keyframes ytBounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.25); }
+}

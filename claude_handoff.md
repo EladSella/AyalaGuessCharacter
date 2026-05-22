@@ -1,36 +1,44 @@
-# Handoff for Claude: Ayala Guess Character
+# Claude Handoff - Ayala Guess Character (Updated)
 
-Hello Claude! This is a handoff document to get you up to speed on the **Ayala Guess Character** game we've been building for the user's daughter, Ayala. 
+שלום קלוד! 👋
+הפרויקט עבר שדרוג מסיבי מאוד בימים האחרונים. הנה סיכום של כל מה שהשתנה ומה המצב הנוכחי של המשחק, כדי שתוכל להמשיך מכאן בצורה חלקה:
 
-## What This Project Is
-A competitive web-based arcade game where the player has 120 seconds to guess as many anime characters as possible using their voice. Each stage gives them 30 seconds to guess the character based on a color palette.
+## מה השתנה מהגרסה הקודמת (גרסת ה-50 דמויות):
 
-## Technical Stack & Architecture
-- **Vanilla HTML/CSS/JS** with a sleek, modern, glassmorphism UI.
-- **Web Speech API**: Uses `webkitSpeechRecognition` set to `he-IL` (Hebrew) for voice input.
-- **Fuzzy Matching**: Custom Levenshtein distance algorithm implemented in `game.js` to forgive slight mispronunciations in Hebrew (e.g., "אולמאיט" instead of "אול מייט").
-- **Dynamic Audio**: Plays the specific anime opening theme (`.webm` audio) in the background based on the current character's series.
-- **TTS & Timeout**: A circular SVG countdown timer. If 30 seconds pass, it plays a buzzer (`assets/buzzer.webm`) and uses `SpeechSynthesis` to announce the timeout in Hebrew.
-- **Local Storage Leaderboard**: Saves the top 5 scores.
+1. **50 דמויות מ-4 סדרות מרכזיות:**
+   הוספנו 20 דמויות חדשות. המשחק כעת מכיל 50 דמויות, שכולן נשאבו ישירות מ-MyAnimeList (ויש לנו תמונה לכל אחת בתוך תיקיית `assets`).
+   הסדרות הקיימות: *Demon Slayer, My Hero Academia, Hunter x Hunter, Komi Can't Communicate*. (לכל סדרה יש קובץ אודיו רקע מתאים שכבר מנגן אוטומטית).
 
-## Current State & Known Issues (IMPORTANT!)
-The game is fully functional with 25 characters defined in `game.js`. **However, there is one pending task you need to assist the user with:**
+2. **חלוקה ל-5 שלבים (Stages):**
+   במקום שכל ה-50 דמויות יוגרלו רנדומלית, חילקנו אותן ל-5 מערכים נפרדים בתוך `game.js` (`stage1Chars` עד `stage5Chars`). בכל שלב יש 10 דמויות, מקלות מאוד למאתגרות במיוחד.
+   המשחק עוקב אחרי השלב הנוכחי עם המשתנה `currentStageLevel`.
 
-1. **Missing Images for the Last 10 Characters**: 
-   - I (AntiGravity) added 10 new characters to the `game.js` array (Shinobu, Giyu, Muzan, All Might, Aizawa, Leorio, Chrollo, Netero, Tadano, Najimi).
-   - *However*, my AI image generation quota was exhausted, so I could not generate the `.png` files for these 10 characters.
-   - **Current Fallback:** `game.js` has an `onerror` handler on the image tag that displays a blue SVG `?` if the image file is missing.
-   - **Your Task:** You need to help the user acquire these 10 images (either by guiding them to download them manually, writing a scraper, or generating them if your tool supports it). The image paths defined in `game.js` are `assets/shinobu.png`, `assets/giyu.png`, etc.
+3. **מערכת "פסילות" ולבבות (Strikes / Hearts):**
+   * לכל שלב יש **3 פסילות** (משתנה `strikes`), שמוצגות בראש המסך (❤️❤️❤️).
+   * זיהוי קולי לא נכון מוריד פסילה.
+   * אם הפסילות מגיעות ל-0 **או** נגמר הזמן לדמות (15 שניות) - השחקן נפסל בשלב.
+   * **כשנפסלים:**
+     * הניקוד (`score`) מתאפס ל-0.
+     * הזמן הכללי של המשחק (`globalTimeLeft`) מתאפס חזרה ל-2 דקות (120 שניות).
+     * מתחילים את **השלב הנוכחי בלבד** מחדש. אין צורך לחזור לשלב 1.
 
-## File Structure
-- `index.html` - The UI and layout.
-- `style.css` - Custom properties, CSS animations, and styling.
-- `game.js` - The core game engine.
-- `assets/` - Contains 4 background music files (`.webm`), `buzzer.webm`, and the first 15 character `.png` files.
+4. **זיהוי קולי סלחני משופר:**
+   פונקציית ה-Levenshtein distance (בדיקת שגיאות הקלדה/הגייה) שודרגה וכעת היא סלחנית יותר (מתירה עד 3 טעויות במילים ארוכות מ-3 אותיות).
 
-## Guidelines for Continuing Work
-- Always ensure the Speech Recognition language remains `he-IL`.
-- The user is using Chrome on Android, which requires user interaction (like clicking the "Tap to Speak" mic button) to initialize audio playback and speech recognition. The code already handles this gracefully.
-- If you add new characters, they must have an array of phonetic Hebrew aliases to ensure the Levenshtein matching works well.
+5. **תג "Perfect! ⭐":**
+   אם עונים נכון תוך 5 שניות או פחות (כשהשעון מראה 10 שניות ומעלה), יש אנימציית "Perfect! ⭐" מיוחדת והשחקן מקבל 150 נקודות במקום 100.
 
-Good luck! 🚀
+6. **תיקוני אודיו ואוכלוסיית דפדפנים:**
+   נוסף `startScreen` למשחק, כך שלחיצה עליו מאשרת לדפדפן להריץ אודיו אוטומטית. בקוד, קריאת `bgMusic.play()` מתבצעת כעת בצורה כפויה כל פעם שנטענת דמות כדי לוודא שאין השתקות של הדפדפן. התמונה של "נג'ימי" הוחלפה בגרסה מותאמת שהמשתמש העלה.
+
+## קבצים מרכזיים:
+* `index.html`: ה-UI. כולל כעת מסך התחלה, טופ באר עם לבבות (Lives), ושם השלב, בתוספת אלמנט ה-Perfect.
+* `style.css`: העיצוב. כולל אנימציות ה-Perfect, צבעים דינמיים לשעון (מכחול דרך כתום ועד אדום כשהזמן נגמר).
+* `game.js`: הליבה. מכיל את כל הלוגיקה, המערכים של השלבים, הזיהוי הקולי וניהול הזמנים.
+
+**נקודת עצירה (סטטוס כרגע):**
+הכל עובד בצורה מושלמת. המשחק רץ, הפיצ'רים נבדקו (זמנים מתאפסים, פסילות עובדות, 50 דמויות נטענות).
+המשתמש (אלעד) פונה אליך (קלוד) כדי שתעבור על הכל, תעשה בקרת איכות ותראה אם יש מקום לעשות אופטימיזציה אחרונה, לשפר את הקוד, או להוסיף רעיונות מבריקים נוספים.
+
+בהצלחה!
+- AntiGravity.

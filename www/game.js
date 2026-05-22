@@ -96,6 +96,22 @@ bgMusic.volume = 0.3;
 const buzzerSound = new Audio("assets/buzzer.webm");
 buzzerSound.volume = 0.8;
 
+// Web Audio API for ticking pressure sound
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playTick() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+  gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+  osc.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
+}
+
 // DOM Elements
 const colorPalette = document.getElementById('colorPalette');
 const characterReveal = document.getElementById('characterReveal');
@@ -213,10 +229,6 @@ function getRandomCharacter() {
     if (currentStageLevel < 5) {
       currentStageLevel++;
       setupStageLevel();
-      // Announce stage up
-      const utterance = new SpeechSynthesisUtterance(`שלב ${currentStageLevel}! בהצלחה`);
-      utterance.lang = 'he-IL'; 
-      window.speechSynthesis.speak(utterance);
     } else {
       // Game completely finished!
       endGame();
@@ -290,6 +302,10 @@ function loadStage() {
       stageTimerRing.style.stroke = '#ef4444';
     }
     
+    if (stageTimeLeft <= 5 && stageTimeLeft > 0) {
+      playTick();
+    }
+    
     if (stageTimeLeft <= 0) {
       handleTimeout();
     }
@@ -359,11 +375,6 @@ function handleStageFail() {
   
   // Play buzzer sound
   buzzerSound.play().catch(()=>console.log("Buzzer blocked"));
-  
-  // Hebrew TTS
-  const utterance = new SpeechSynthesisUtterance(`נפסלת! מתחילים את השלב מחדש.`);
-  utterance.lang = 'he-IL'; 
-  window.speechSynthesis.speak(utterance);
 
   setTimeout(() => {
     if (gameActive) {

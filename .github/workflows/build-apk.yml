@@ -33,7 +33,14 @@ jobs:
         run: npx cap add android || true
 
       - name: Sync Capacitor assets
-        run: npx cap sync android --verbose
+        run: npx cap sync android --verbose > sync.log 2>&1
+
+      - name: Upload Sync Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capacitor-sync-log
+          path: sync.log
 
       - name: Make Gradle wrapper executable
         working-directory: android

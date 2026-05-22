@@ -83,7 +83,7 @@ const stageNames = ["שלב 1", "שלב 2", "שלב 3", "שלב 4", "שלב 5"];
 let strikes = 3;
 
 // Timers
-let globalTimeLeft = 120; // 120 seconds (2 mins)
+let globalTimeLeft = 600; // 600 seconds (10 mins)
 let stageTimeLeft = 15; // 15 seconds
 let globalInterval = null;
 let stageInterval = null;
@@ -244,7 +244,7 @@ function getRandomCharacter() {
 function startGame() {
   currentStageLevel = 1;
   score = 0;
-  globalTimeLeft = 120; // 2 minutes
+  globalTimeLeft = 600; // 10 minutes
   gameActive = true;
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
@@ -378,7 +378,7 @@ function handleStageFail() {
 
   setTimeout(() => {
     if (gameActive) {
-      globalTimeLeft = 120; // Reset full 2 minutes
+      globalTimeLeft = 600; // Reset full 10 minutes
       setupStageLevel(); // Restart stage
       loadStage();
     }

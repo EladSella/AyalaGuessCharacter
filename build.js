@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const filesToCopy = ['index.html', 'game.js', 'style.css', 'manifest.json'];
+const filesToCopy = ['index.html', 'game.js', 'style.css', 'manifest.json', 'privacy.html'];
 const srcDir = __dirname;
 const destDir = path.join(__dirname, 'www');
 

@@ -39,12 +39,21 @@ jobs:
       - name: Sync Capacitor assets
         run: npx cap sync android
 
-      - name: Build APK
-        working-directory: android
-        run: ./gradlew assembleRelease
+      - name: Generate Keystore if missing
+        run: |
+          if [ ! -f android/app/release.keystore ]; then
+            keytool -genkey -v -keystore android/app/release.keystore -alias ayala-key -keyalg RSA -keysize 2048 -validity 10000 -storepass ayala123 -keypass ayala123 -dname "CN=Elad Sela, OU=MayaOS, O=MayaOS, L=Tel Aviv, S=Tel Aviv, C=IL"
+          fi
 
-      - name: Upload APK artifact
+      - name: Build APK and AAB (App Bundle)
+        working-directory: android
+        run: ./gradlew bundleRelease assembleRelease
+
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ayala-game-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: ayala-game-artifacts
+          path: |
+            android/app/build/outputs/apk/release/app-release.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/release.keystore

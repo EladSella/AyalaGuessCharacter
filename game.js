@@ -49,9 +49,7 @@ let currentChar = null;
 let gameActive = false;
 
 // Timers
-let globalTimeLeft = 60; // 1 minute
 let stageTimeLeft = 15; // 15 seconds
-let globalInterval = null;
 let stageInterval = null;
 
 // Audio
@@ -73,7 +71,6 @@ const statusText = document.getElementById('statusText');
 const recognizedText = document.getElementById('recognizedText');
 const scoreEl = document.getElementById('score');
 const stageEl = document.getElementById('stage');
-const globalTimerEl = document.getElementById('globalTimer');
 const stageTimerText = document.getElementById('stageTimerText');
 const stageTimerRing = document.getElementById('stageTimerRing');
 const endScreen = document.getElementById('endScreen');
@@ -168,27 +165,11 @@ function startGame() {
   availableCharacters = [...allCharacters];
   score = 0;
   stageCount = 1;
-  globalTimeLeft = 60;
   gameActive = true;
   scoreEl.textContent = score;
   endScreen.style.display = 'none';
-  
-  clearInterval(globalInterval);
-  globalInterval = setInterval(() => {
-    globalTimeLeft--;
-    updateGlobalTimerDisplay();
-    if (globalTimeLeft <= 0) {
-      endGame();
-    }
-  }, 1000);
 
   loadStage();
-}
-
-function updateGlobalTimerDisplay() {
-  const m = Math.floor(globalTimeLeft / 60).toString().padStart(2, '0');
-  const s = (globalTimeLeft % 60).toString().padStart(2, '0');
-  globalTimerEl.textContent = `${m}:${s}`;
 }
 
 function loadStage() {
@@ -330,7 +311,6 @@ function revealCharacter() {
 
 function endGame() {
   gameActive = false;
-  clearInterval(globalInterval);
   clearInterval(stageInterval);
   if (isListening && recognition) recognition.stop();
   bgMusic.pause();
@@ -396,5 +376,4 @@ micBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', startGame);
 
-updateGlobalTimerDisplay();
 startGame();

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ayala Guess Character</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <header>
+      <div class="top-bar">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="stat">Lives: <span id="lives">❤️❤️❤️</span></div>
+        <div class="stat" id="stageName">Otaku Trainee 🥉</div>
+      </div>
+      
+      <!-- Circular Stage Timer -->
+      <div class="stage-timer-container">
+        <svg class="progress-ring" width="80" height="80">
+          <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+          <circle id="stageTimerRing" class="progress-ring__circle" stroke="#3b82f6" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+        </svg>
+        <div id="stageTimerText" class="stage-timer-text">30</div>
+      </div>
+      
+      <div class="series-hint">Series: <span id="seriesName"></span></div>
+    </header>
+
+    <main>
+      <!-- The Color Palette (Now 6 colors) -->
+      <div class="color-palette" id="colorPalette">
+        <!-- Colored squares will be injected here by JS -->
+      </div>
+
+      <!-- The Character Reveal (Hidden initially) -->
+      <div class="character-reveal" id="characterReveal" style="display: none;">
+        <img id="characterImage" src="" alt="Character">
+        <h2 id="characterName">Name</h2>
+      </div>
+      
+      <div id="perfectBadge" class="perfect-badge">PERFECT! ⭐</div>
+
+      <!-- Interaction Area -->
+      <div class="interaction-area">
+        <button id="micBtn" class="mic-btn">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <div id="statusText" class="status-text">Tap to Speak</div>
+        <div id="recognizedText" class="recognized-text"></div>
+      </div>
+    </main>
+
+    <!-- Leaderboard / End Screen -->
+    <div id="endScreen" class="end-screen" style="display: none;">
+      <h2>Time's Up! ⏱️</h2>
+      <p>Final Score: <span id="finalScore">0</span></p>
+      
+      <div class="leaderboard">
+        <h3>Top 5 Players</h3>
+        <ul id="leaderboardList">
+          <!-- Scores will be injected here -->
+        </ul>
+      </div>
+
+      <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="15" autocomplete="off">
+      <button id="saveScoreBtn" class="save-btn">Save Score</button>
+      <button id="restartBtn" class="restart-btn" style="display: none;"><i class="fa-solid fa-rotate-right"></i> Play Again</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="startScreen" class="end-screen" style="z-index: 200;">
+      <h2 style="color: var(--text-color); font-size: 40px; margin-bottom: 20px; line-height: 1.2;">Ayala Guess Character</h2>
+      <p style="font-size: 18px; margin-bottom: 30px; text-align: center;">יש לכם 60 שניות לנחש כמה שיותר דמויות!<br>הפעילו רמקולים 🔊</p>
+      <button id="startBtn" class="save-btn" style="font-size: 24px; padding: 20px;">התחל משחק 🚀</button>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

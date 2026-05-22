@@ -1,6 +1,6 @@
 {
-  "name": "guestMyCharacter",
-  "short_name": "guestMyCharacter",
+  "name": "Guess the Anime Character",
+  "short_name": "Anime Guess",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#111111",

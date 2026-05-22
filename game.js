@@ -367,6 +367,7 @@ function handleStageFail() {
 
   setTimeout(() => {
     if (gameActive) {
+      globalTimeLeft = 120; // Reset full 2 minutes
       setupStageLevel(); // Restart stage
       loadStage();
     }

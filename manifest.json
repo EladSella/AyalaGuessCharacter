@@ -1,6 +1,6 @@
 {
-  "name": "Ayala Guess Character",
-  "short_name": "Ayala",
+  "name": "guestMyCharacter",
+  "short_name": "guestMyCharacter",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#111111",

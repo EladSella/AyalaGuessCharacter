@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Ayala Guess Character</string>
-    <string name="title_activity_main">Ayala Guess Character</string>
+    <string name="app_name">guestMyCharacter</string>
+    <string name="title_activity_main">guestMyCharacter</string>
     <string name="package_name">com.elad.ayala</string>
     <string name="custom_url_scheme">com.elad.ayala</string>
 </resources>

@@ -37,11 +37,38 @@ const stage3Chars = [
   { id: "najimi", name: "Najimi", series: "Komi Can't Communicate", aliases: ["najimi", "osana", "נג'ימי", "נאג'ימי", "נאגמי", "אוסאנה"], colors: ["#d946ef", "#a855f7", "#ffffff", "#000000", "#f0abfc", "#c084fc"], image: "assets/najimi.png" }
 ];
 
+const stage4Chars = [
+  { id: "kanao", name: "Kanao", series: "Demon Slayer", aliases: ["kanao", "tsuyuri", "קאנאו", "קנאו", "צויורי"], colors: ["#f472b6", "#a855f7", "#ffffff", "#000000", "#db2777", "#9333ea"], image: "assets/kanao.png" },
+  { id: "akaza", name: "Akaza", series: "Demon Slayer", aliases: ["akaza", "אקאזה", "אקזה"], colors: ["#ef4444", "#ffffff", "#3b82f6", "#b91c1c", "#f87171", "#1d4ed8"], image: "assets/akaza.png" },
+  { id: "dabi", name: "Dabi", series: "My Hero Academia", aliases: ["dabi", "דאבי", "דבי"], colors: ["#000000", "#3b82f6", "#1f2937", "#60a5fa", "#ffffff", "#1d4ed8"], image: "assets/dabi.png" },
+  { id: "hawks", name: "Hawks", series: "My Hero Academia", aliases: ["hawks", "keigo", "הוקס", "קייגו"], colors: ["#eab308", "#ef4444", "#000000", "#fde047", "#f87171", "#ffffff"], image: "assets/hawks.png" },
+  { id: "endeavor", name: "Endeavor", series: "My Hero Academia", aliases: ["endeavor", "enji", "אנדוור", "אנדבר"], colors: ["#dc2626", "#ea580c", "#fcd34d", "#b91c1c", "#000000", "#ffffff"], image: "assets/endeavor.png" },
+  { id: "bisky", name: "Biscuit", series: "Hunter x Hunter", aliases: ["bisky", "biscuit", "ביסקי", "ביסקויט"], colors: ["#fbcfe8", "#f472b6", "#ffffff", "#db2777", "#000000", "#fde047"], image: "assets/bisky.png" },
+  { id: "pitou", name: "Pitou", series: "Hunter x Hunter", aliases: ["pitou", "neferpitou", "פיטו", "נפרפיטו"], colors: ["#ffffff", "#fef08a", "#000000", "#eab308", "#ef4444", "#3b82f6"], image: "assets/pitou.png" },
+  { id: "yamai", name: "Yamai", series: "Komi Can't Communicate", aliases: ["yamai", "ren yamai", "יאמאי", "רן יאמאי", "ימאי"], colors: ["#8b5cf6", "#a855f7", "#ffffff", "#000000", "#6d28d9", "#d8b4fe"], image: "assets/yamai.png" },
+  { id: "nakanaka", name: "Nakanaka", series: "Komi Can't Communicate", aliases: ["nakanaka", "omoharu", "נאקאנאקה", "נקנקה"], colors: ["#1f2937", "#000000", "#ef4444", "#ffffff", "#4b5563", "#dc2626"], image: "assets/nakanaka.png" },
+  { id: "agari", name: "Agari", series: "Komi Cant Communicate", aliases: ["agari", "himiko", "אגארי", "אגרי"], colors: ["#10b981", "#34d399", "#ffffff", "#000000", "#059669", "#6ee7b7"], image: "assets/agari.png" }
+];
+
+const stage5Chars = [
+  { id: "sanemi", name: "Sanemi", series: "Demon Slayer", aliases: ["sanemi", "shinazugawa", "סאנמי", "סנמי"], colors: ["#ffffff", "#d1d5db", "#10b981", "#000000", "#34d399", "#9ca3af"], image: "assets/sanemi.png" },
+  { id: "obanai", name: "Obanai", series: "Demon Slayer", aliases: ["obanai", "iguro", "אובנאי", "אובני"], colors: ["#000000", "#ffffff", "#fcd34d", "#1f2937", "#eab308", "#374151"], image: "assets/obanai.png" },
+  { id: "muichiro", name: "Muichiro", series: "Demon Slayer", aliases: ["muichiro", "tokito", "מואיצ'ירו", "מואיצירו"], colors: ["#38bdf8", "#0ea5e9", "#000000", "#ffffff", "#1e3a8a", "#0284c7"], image: "assets/muichiro.png" },
+  { id: "momo", name: "Momo", series: "My Hero Academia", aliases: ["momo", "yaoyorozu", "מומו", "יאויורוזו"], colors: ["#ef4444", "#dc2626", "#000000", "#ffffff", "#b91c1c", "#f87171"], image: "assets/momo.png" },
+  { id: "denki", name: "Denki", series: "My Hero Academia", aliases: ["denki", "kaminari", "דנקי", "קאמינארי", "קמינרי"], colors: ["#facc15", "#eab308", "#000000", "#ffffff", "#ca8a04", "#fef08a"], image: "assets/denki.png" },
+  { id: "illumi", name: "Illumi", series: "Hunter x Hunter", aliases: ["illumi", "zoldyck", "אילומי", "אילומי זולדיק"], colors: ["#4c1d95", "#6d28d9", "#000000", "#ffffff", "#2e1065", "#16a34a"], image: "assets/illumi.png" },
+  { id: "kite", name: "Kite", series: "Hunter x Hunter", aliases: ["kite", "קייט"], colors: ["#1e3a8a", "#3b82f6", "#ffffff", "#000000", "#1e40af", "#60a5fa"], image: "assets/kite.png" },
+  { id: "ging", name: "Ging", series: "Hunter x Hunter", aliases: ["ging", "ג'ינג", "גינג", "ג'ינג פריקס"], colors: ["#22c55e", "#16a34a", "#ffffff", "#000000", "#15803d", "#fcd34d"], image: "assets/ging.png" },
+  { id: "yadano", name: "Yadano", series: "Komi Can't Communicate", aliases: ["yadano", "makeru", "יאדאנו", "ידנו"], colors: ["#db2777", "#be123c", "#ffffff", "#000000", "#9f1239", "#f472b6"], image: "assets/yadano.png" },
+  { id: "shousuke", name: "Shousuke", series: "Komi Can't Communicate", aliases: ["shousuke", "komi brother", "שוסוקה", "אח של קומי"], colors: ["#111827", "#1f2937", "#ffffff", "#000000", "#374151", "#4b5563"], image: "assets/shousuke.png" }
+];
+
 const seriesAudio = {
   "Demon Slayer": "assets/demonslayer.webm",
   "My Hero Academia": "assets/mha.webm",
   "Hunter x Hunter": "assets/hxh.webm",
-  "Komi Can't Communicate": "assets/komi.webm"
+  "Komi Can't Communicate": "assets/komi.webm",
+  "Komi Cant Communicate": "assets/komi.webm" // fallback
 };
 
 let availableCharacters = [];
@@ -52,7 +79,7 @@ let gameActive = false;
 
 // Progression
 let currentStageLevel = 1;
-const stageNames = ["Otaku Trainee 🥉", "Anime Expert 🥈", "Shounen Master 🥇"];
+const stageNames = ["שלב 1", "שלב 2", "שלב 3", "שלב 4", "שלב 5"];
 let strikes = 3;
 
 // Timers
@@ -166,6 +193,8 @@ function setupStageLevel() {
   if (currentStageLevel === 1) availableCharacters = [...stage1Chars];
   else if (currentStageLevel === 2) availableCharacters = [...stage2Chars];
   else if (currentStageLevel === 3) availableCharacters = [...stage3Chars];
+  else if (currentStageLevel === 4) availableCharacters = [...stage4Chars];
+  else if (currentStageLevel === 5) availableCharacters = [...stage5Chars];
   
   if (stageNameEl) stageNameEl.textContent = stageNames[currentStageLevel - 1];
   strikes = 3;
@@ -181,7 +210,7 @@ function updateLivesDisplay() {
 function getRandomCharacter() {
   if (availableCharacters.length === 0) {
     // Stage cleared! Move to next stage
-    if (currentStageLevel < 3) {
+    if (currentStageLevel < 5) {
       currentStageLevel++;
       setupStageLevel();
       // Announce stage up
@@ -231,8 +260,11 @@ function loadStage() {
   seriesNameEl.textContent = currentChar.series;
   
   const newMusicSrc = seriesAudio[currentChar.series];
-  if (newMusicSrc && !bgMusic.src.includes(newMusicSrc)) {
-    bgMusic.src = newMusicSrc;
+  if (newMusicSrc) {
+    // Force music play even if src is same, browser might have paused it
+    if (!bgMusic.src.includes(newMusicSrc)) {
+      bgMusic.src = newMusicSrc;
+    }
     let playPromise = bgMusic.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {});
@@ -318,6 +350,10 @@ function handleStageFail() {
   clearInterval(stageInterval);
   if (isListening && recognition) recognition.stop();
   
+  // Reset score as requested
+  score = 0;
+  scoreEl.textContent = score;
+  
   statusText.textContent = "פסלת את השלב! מתחילים מחדש...";
   revealCharacter();
   
@@ -371,22 +407,9 @@ function handleTimeout() {
   clearInterval(stageInterval);
   if (isListening && recognition) recognition.stop();
   
-  statusText.textContent = "Time's Up!";
-  revealCharacter();
-  
-  // Play buzzer sound
-  buzzerSound.play().catch(()=>console.log("Buzzer blocked"));
-  
-  // Hebrew TTS
-  const utterance = new SpeechSynthesisUtterance(`נגמר הזמן! עוברים לדמות הבאה`);
-  utterance.lang = 'he-IL'; 
-  window.speechSynthesis.speak(utterance);
-
-  setTimeout(() => {
-    if (gameActive) {
-      loadStage();
-    }
-  }, 4000);
+  // Running out of time counts as a failure according to new rules
+  // We can either deduct a strike or fail the stage. Since "פסילה" means game over for stage, let's just fail the stage.
+  handleStageFail();
 }
 
 function revealCharacter() {

@@ -509,3 +509,24 @@ if (startBtn) {
 if (restartBtn) {
   restartBtn.addEventListener('click', startGame);
 }
+
+// Pause music when the user exits/leaves the app or tab, and resume when they return
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+      bgMusic.wasPlayingBeforeHide = true;
+    }
+    if (audioCtx && audioCtx.state === 'running') {
+      audioCtx.suspend();
+    }
+  } else if (document.visibilityState === 'visible') {
+    if (gameActive && bgMusic && bgMusic.wasPlayingBeforeHide) {
+      bgMusic.play().catch(err => console.log("Music play blocked on visibility change:", err));
+      bgMusic.wasPlayingBeforeHide = false;
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+});
